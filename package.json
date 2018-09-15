@@ -1,10 +1,10 @@
 {
-    "name": "SceneHistory-Unity",
+    "name": "SceneHistory",
     "version": "1.0.0",
     "repository": {
       "type": "git",
       "url": "git+https://github.com/takupisu/SceneHistory-Unity.git"
     },
-    "src": "Assets/SceneHistory-Unity",
+    "src": "Assets/SceneHistory",
     "license": "MIT"
   }
