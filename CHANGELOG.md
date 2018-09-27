@@ -1,6 +1,14 @@
 # Change Log
 
-## [v1.0.0](https://github.com/takupisu/SceneHistory-Unity/tree/v1.0.0) (2018-09-16)
+## [v1.0.1](https://github.com/takupisu/SceneHistory-Unity/tree/v1.0.1) (2018-09-27)
+[Full Changelog](https://github.com/takupisu/SceneHistory-Unity/compare/v1.0.0...v1.0.1)
+
+**Merged pull requests:**
+
+- Merge pull request \#7 from takupisu/develop [\#8](https://github.com/takupisu/SceneHistory-Unity/pull/8) ([takupisu](https://github.com/takupisu))
+- unity\_release.sh削除（gist管理に移行） [\#7](https://github.com/takupisu/SceneHistory-Unity/pull/7) ([takupisu](https://github.com/takupisu))
+
+## [v1.0.0](https://github.com/takupisu/SceneHistory-Unity/tree/v1.0.0) (2018-09-15)
 **Implemented enhancements:**
 
 - v1.0.0 Release [\#1](https://github.com/takupisu/SceneHistory-Unity/issues/1)
