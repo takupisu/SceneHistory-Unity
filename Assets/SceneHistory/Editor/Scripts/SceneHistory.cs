@@ -13,6 +13,9 @@ public class SceneHistory : EditorWindow
 {
     static List<SceneHistoryData> datas = new List<SceneHistoryData>();
     //const string PrefsKey = "SceneHistory";
+    const string HistoryListLabel = "HistoryList";
+    const string DeleteAllLabel = "DeleteAllHistory";
+    const string DeleteAllButtonName = "DeleteAll";
     Vector2 scrollPosition = new Vector2(0, 0);
 
     static SceneHistory()
@@ -45,6 +48,11 @@ public class SceneHistory : EditorWindow
     void OnGUI()
     {
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+        // ----- 現在の履歴シーン一覧 -----
+        EditorGUILayout.LabelField(HistoryListLabel, EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+        EditorGUI.indentLevel++;
         for (int i = 0; i < datas.Count; i++)
         {
             if (GUILayout.Button(datas[i].name))
@@ -55,6 +63,34 @@ public class SceneHistory : EditorWindow
                 }
             }
         }
+        EditorGUI.indentLevel--;
+        // 区切り線
+        EditorGUILayout.Space();
+        GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+        EditorGUILayout.Space();
+
+
+        //  ----- 全履歴削除ボタン -----
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField(DeleteAllLabel, EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+        EditorGUI.indentLevel++;
+        // ボタンの背景色を赤色に
+        GUI.backgroundColor = Color.red;
+        if (GUILayout.Button(DeleteAllButtonName))
+        {
+            datas.Clear();
+        }
+        GUI.backgroundColor = Color.white;
+        EditorGUI.indentLevel--;
+        // 区切り線
+        EditorGUILayout.Space();
+        GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+        EditorGUILayout.Space();
+
+
         EditorGUILayout.EndScrollView();
     }
 
