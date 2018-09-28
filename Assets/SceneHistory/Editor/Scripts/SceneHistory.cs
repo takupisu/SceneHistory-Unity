@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditorInternal;
 using System;
 
@@ -17,22 +16,29 @@ public class SceneHistory : EditorWindow
     ReorderableList reorderableList;
     [SerializeField]
     List<SceneHistoryData> datas = new List<SceneHistoryData>();
+    Vector2 scrollPosition = new Vector2(0, 0);
     //const string PrefsKey = "SceneHistory";
     const string HistoryListLabel = "HistoryList";
     const string DeleteAllLabel = "DeleteAllHistory";
     const string DeleteAllButtonName = "DeleteAll";
-    Vector2 scrollPosition = new Vector2(0, 0);
+    const string LoadButtonLabel = "Load";
+    const string AdditiveToggleLabel = "Add";
+    const string DeletebButtonLabel = "Del";
     const float ElementHeight = 20f;
     const float ElementHeightSpace = 5f;
     const float ElementWidthSpace = 20f;
+    const float LoadButtonLabelX = 12f;
     const float AdditiveToggleWidth = 15f;
+    const float AdditiveToggleLabelWidth = 25f;
+    const float AdditiveToggleY = 2f;
+    const float DeleteButtonLabelX = 9f;
     const float DeleteButtonWidth = 30f;
     Texture trashTexture;
 
     private void OnEnable()
     {
         EditorSceneManager.sceneOpened += OnOpened;
-
+       
         trashTexture = EditorGUIUtility.Load("icons/d_treeeditor.trash.png") as Texture2D;
 
         reorderableList = new ReorderableList(datas, typeof(SceneHistoryData));
@@ -49,10 +55,13 @@ public class SceneHistory : EditorWindow
 
     void OnOpened(Scene scene, OpenSceneMode mode)
     {
+        if( null != datas.Find(d => d.path == scene.path))
+        {
+            return;
+        }
         SceneHistoryData data = new SceneHistoryData(scene.name, scene.path, mode);
-        datas.Remove(datas.Find(d => d.path == scene.path));
         datas.Insert(0,data);
-
+        Repaint();
         /*
         string str = EditorPrefs.GetString(PrefsKey);
         str += ":" + scene.path;
@@ -70,23 +79,13 @@ public class SceneHistory : EditorWindow
     {
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-        reorderableList.DoLayoutList();
-        /*
+
+
         // ----- 現在の履歴シーン一覧 -----
-        EditorGUILayout.LabelField(HistoryListLabel, EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-        EditorGUI.indentLevel++;
-        for (int i = 0; i < datas.Count; i++)
-        {
-            if (GUILayout.Button(datas[i].name))
-            {
-                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                {
-                    EditorSceneManager.OpenScene(datas[i].path, datas[i].mode);
-                }
-            }
-        }
-        EditorGUI.indentLevel--;
+        //EditorGUILayout.LabelField(HistoryListLabel, EditorStyles.boldLabel);
+        reorderableList.DoLayoutList();
+
+        /*
         // 区切り線
         EditorGUILayout.Space();
         GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
@@ -124,20 +123,22 @@ public class SceneHistory : EditorWindow
     {
         // 読み込みボタン
         Rect loadButtonRect = new Rect(rect);
+        loadButtonRect.x += LoadButtonLabelX;
         loadButtonRect.width = rect.width - (ElementWidthSpace + AdditiveToggleWidth + ElementWidthSpace + DeleteButtonWidth);
-        EditorGUI.LabelField(loadButtonRect, "読み込み");
+        EditorGUI.LabelField(loadButtonRect, LoadButtonLabel);
+        loadButtonRect.x -= LoadButtonLabelX;
 
         // 追加チェックボックス
         Rect additiveToggleRect = new Rect(loadButtonRect);
         additiveToggleRect.x += loadButtonRect.width + ElementWidthSpace;
-        additiveToggleRect.width = AdditiveToggleWidth;
-        EditorGUI.LabelField(additiveToggleRect, "追加設定");
+        additiveToggleRect.width = AdditiveToggleLabelWidth;
+        EditorGUI.LabelField(additiveToggleRect, AdditiveToggleLabel);
 
         // 削除ボタン
         Rect deleteButtonRect = new Rect(additiveToggleRect);
-        deleteButtonRect.x += additiveToggleRect.width + ElementWidthSpace;
+        deleteButtonRect.x += additiveToggleRect.width + ElementWidthSpace - DeleteButtonLabelX;
         deleteButtonRect.width = DeleteButtonWidth;
-        EditorGUI.LabelField(deleteButtonRect, "削除");
+        EditorGUI.LabelField(deleteButtonRect, DeletebButtonLabel);
     }
 
     /// <summary>
@@ -174,10 +175,10 @@ public class SceneHistory : EditorWindow
         // 追加チェックボックス
         Rect additiveToggleRect = new Rect(loadButtonRect);
         additiveToggleRect.x += loadButtonRect.width + ElementWidthSpace;
-        additiveToggleRect.y += 2f;
+        additiveToggleRect.y += AdditiveToggleY;
         additiveToggleRect.width = AdditiveToggleWidth;
         datas[index].mode = GUI.Toggle(additiveToggleRect, datas[index].mode == OpenSceneMode.Additive, GUIContent.none) ? OpenSceneMode.Additive : OpenSceneMode.Single;
-        additiveToggleRect.y -= 2f;
+        additiveToggleRect.y -= AdditiveToggleY;
 
         // 削除ボタン
         Rect deleteButtonRect = new Rect(additiveToggleRect);
