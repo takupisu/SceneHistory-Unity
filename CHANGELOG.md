@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.1.0](https://github.com/takupisu/SceneHistory-Unity/tree/v1.1.0) (2018-09-28)
+[Full Changelog](https://github.com/takupisu/SceneHistory-Unity/compare/v1.0.1...v1.1.0)
+
+**Implemented enhancements:**
+
+- Addtive対応 [\#5](https://github.com/takupisu/SceneHistory-Unity/issues/5)
+- 個別に履歴削除 [\#4](https://github.com/takupisu/SceneHistory-Unity/issues/4)
+
 ## [v1.0.1](https://github.com/takupisu/SceneHistory-Unity/tree/v1.0.1) (2018-09-27)
 [Full Changelog](https://github.com/takupisu/SceneHistory-Unity/compare/v1.0.0...v1.0.1)
 
