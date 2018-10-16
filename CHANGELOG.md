@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.1.1](https://github.com/takupisu/SceneHistory-Unity/tree/v1.1.1) (2018-10-16)
+[Full Changelog](https://github.com/takupisu/SceneHistory-Unity/compare/v1.1.0...v1.1.1)
+
+**Closed issues:**
+
+- unitypackageにreadme, changelog, licenseを追加 [\#10](https://github.com/takupisu/SceneHistory-Unity/issues/10)
+
 ## [v1.1.0](https://github.com/takupisu/SceneHistory-Unity/tree/v1.1.0) (2018-09-28)
 [Full Changelog](https://github.com/takupisu/SceneHistory-Unity/compare/v1.0.1...v1.1.0)
 
