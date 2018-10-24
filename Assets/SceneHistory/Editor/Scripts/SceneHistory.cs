@@ -17,9 +17,7 @@ public class SceneHistory : EditorWindow
     [SerializeField]
     List<SceneHistoryData> datas = new List<SceneHistoryData>();
     Vector2 scrollPosition = new Vector2(0, 0);
-    //const string PrefsKey = "SceneHistory";
-    const string HistoryListLabel = "HistoryList";
-    const string DeleteAllLabel = "DeleteAllHistory";
+
     const string DeleteAllButtonName = "DeleteAll";
     const string LoadButtonLabel = "Load";
     const string AdditiveToggleLabel = "Add";
@@ -33,6 +31,8 @@ public class SceneHistory : EditorWindow
     const float AdditiveToggleY = 2f;
     const float DeleteButtonLabelX = 9f;
     const float DeleteButtonWidth = 30f;
+    const float AllDeleteButtonHeight = 20f;
+    const float AllDeleteButtonWidth = 90f;
     Texture trashTexture;
 
     private void OnEnable()
@@ -62,11 +62,6 @@ public class SceneHistory : EditorWindow
         SceneHistoryData data = new SceneHistoryData(scene.name, scene.path, mode);
         datas.Insert(0,data);
         Repaint();
-        /*
-        string str = EditorPrefs.GetString(PrefsKey);
-        str += ":" + scene.path;
-        EditorPrefs.SetString(PrefsKey, str);
-        */
     }
 
     [MenuItem("Window/SceneHistory")]
@@ -75,42 +70,25 @@ public class SceneHistory : EditorWindow
         EditorWindow.GetWindow<SceneHistory>();
     }
 
+    
     void OnGUI()
     {
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-
-
         // ----- 現在の履歴シーン一覧 -----
-        //EditorGUILayout.LabelField(HistoryListLabel, EditorStyles.boldLabel);
         reorderableList.DoLayoutList();
 
         /*
-        // 区切り線
-        EditorGUILayout.Space();
-        GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
-        EditorGUILayout.Space();
-
-
         //  ----- 全履歴削除ボタン -----
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField(DeleteAllLabel, EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-        EditorGUI.indentLevel++;
+        Rect rect = GUILayoutUtility.GetLastRect();
+        rect.width = AllDeleteButtonWidth;
         // ボタンの背景色を赤色に
         GUI.backgroundColor = Color.red;
-        if (GUILayout.Button(DeleteAllButtonName))
+        if (GUI.Button(rect,DeleteAllButtonName))
         {
-            datas.Clear();
+            DeleteAllHistoryData();
         }
         GUI.backgroundColor = Color.white;
-        EditorGUI.indentLevel--;
-        // 区切り線
-        EditorGUILayout.Space();
-        GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
-        EditorGUILayout.Space();
         */
 
         EditorGUILayout.EndScrollView();
@@ -166,6 +144,7 @@ public class SceneHistory : EditorWindow
         loadButtonRect.width = rect.width - (ElementWidthSpace + AdditiveToggleWidth + ElementWidthSpace + DeleteButtonWidth);
         if (GUI.Button(loadButtonRect,datas[index].name))
         {
+            // 必要なら保存確認ダイアログ表示
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 EditorSceneManager.OpenScene(datas[index].path, datas[index].mode);
@@ -188,9 +167,19 @@ public class SceneHistory : EditorWindow
         {
             datas.RemoveAt(index);
         }
-      
     }
 
+    /// <summary>
+    /// 全履歴削除
+    /// </summary>
+    void DeleteAllHistoryData()
+    {
+        datas.Clear();
+    }
+
+    /// <summary>
+    /// 履歴データ
+    /// </summary>
     [Serializable]
     public class SceneHistoryData
     {
@@ -200,8 +189,20 @@ public class SceneHistory : EditorWindow
             path = p;
             mode = m;
         }
+
+        /// <summary>
+        /// シーン名
+        /// </summary>
         public string name;
+
+        /// <summary>
+        /// シーンのファイル
+        /// </summary>
         public string path;
+
+        /// <summary>
+        /// シーンの読み込みモード
+        /// </summary>
         public OpenSceneMode mode;
     }
 }
